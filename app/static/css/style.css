@@ -1,0 +1,143 @@
+:root {
+    --vermelho: #e6432b;
+    --laranja: #ff8a3d;
+    --fundo-escuro: #1a1210;
+    --fundo-card: #241a17;
+}
+
+body {
+    background: linear-gradient(160deg, #1a1210 0%, #2b1a14 60%, #1a1210 100%);
+    color: #f4ede9;
+    min-height: 100vh;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.navbar {
+    background: rgba(20, 12, 10, 0.9);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+a { text-decoration: none; }
+
+.btn-pizza {
+    background: linear-gradient(135deg, var(--vermelho), var(--laranja));
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+}
+.btn-pizza:hover {
+    opacity: 0.9;
+    color: #fff;
+}
+
+.card-pizza {
+    background: var(--fundo-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease;
+}
+.card-pizza:hover {
+    transform: translateY(-4px);
+}
+.card-pizza img.foto-pizza,
+.card-pizza .foto-pizza-fallback {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #3a2620, #55291a);
+}
+.foto-pizza-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+.card-pizza .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.card-pizza .preco {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--laranja);
+}
+
+.hero {
+    background: radial-gradient(circle at top right, rgba(255,138,61,0.25), transparent 60%),
+                radial-gradient(circle at bottom left, rgba(230,67,43,0.25), transparent 60%);
+    border-radius: 20px;
+    padding: 60px 30px;
+    text-align: center;
+}
+
+.card-form, .card-painel {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 30px;
+}
+
+.form-control, .form-select {
+    background: rgba(255,255,255,0.9);
+}
+
+.ingrediente-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.ingrediente-item label {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+.ingrediente-item .preco-add {
+    color: var(--laranja);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.total-flutuante {
+    position: sticky;
+    top: 90px;
+    background: var(--fundo-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.table-dark-custom {
+    --bs-table-bg: transparent;
+    --bs-table-color: #f4ede9;
+}
+
+.badge-status-Pendente { background: #6c757d; }
+.badge-status-Em_preparo { background: #ff8a3d; color: #1a1210; }
+.badge-status-Saiu_para_entrega { background: #0dcaf0; color: #1a1210; }
+.badge-status-Entregue { background: #198754; }
+.badge-status-Cancelado { background: #dc3545; }
+
+.thumb-pequena {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.mapa-embed {
+    width: 100%;
+    height: 380px;
+    border: 0;
+    border-radius: 14px;
+}

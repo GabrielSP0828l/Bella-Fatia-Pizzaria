@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Pedido #{{ pedido.id }} — Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">📦 Pedido #{{ pedido.id }}</h1>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card-form">
+            <h5>Itens</h5>
+            {% for item in pedido.itens %}
+            <div class="py-2 border-bottom border-secondary-subtle">
+                <div class="d-flex justify-content-between">
+                    <span>{{ item.quantidade }}× {{ item.nome }}</span>
+                    <span>{{ item.subtotal_formatado() }}</span>
+                </div>
+                {% if item.ingredientes %}
+                <p class="small text-light-emphasis mb-0">
+                    {{ item.ingredientes | map(attribute='nome') | join(', ') }}
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-between mt-3">
+                <strong>Total</strong>
+                <strong class="preco">{{ pedido.total_formatado() }}</strong>
+            </div>
+        </div>
+
+        <div class="card-form mt-4">
+            <h5>Cliente e entrega</h5>
+            <p class="mb-1"><strong>Cliente:</strong> {{ pedido.usuario.nome }} ({{ pedido.usuario.email }})</p>
+            <p class="mb-1"><strong>Telefone:</strong> {{ pedido.usuario.telefone or '-' }}</p>
+            <p class="mb-1"><strong>Endereço:</strong> {{ pedido.endereco_entrega }}</p>
+            <p class="mb-1"><strong>Pagamento:</strong> {{ pedido.forma_pagamento }}</p>
+            {% if pedido.observacoes %}
+            <p class="mb-0"><strong>Observações:</strong> {{ pedido.observacoes }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card-form">
+            <h5>Status do pedido</h5>
+            <p class="mb-3">Status atual: <span class="badge badge-status-{{ pedido.status.name }}">{{ pedido.status.value }}</span></p>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.status.label(class="form-label") }}
+                    {{ form.status(class="form-select") }}
+                </div>
+                {{ form.submit(class="btn btn-pizza w-100") }}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

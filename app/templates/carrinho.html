@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Carrinho — {{ config_loja.nome_loja if config_loja else 'Pizzaria' }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">🛒 Seu Carrinho</h1>
+
+{% if itens %}
+<div class="card-form mb-4">
+    {% for item in itens %}
+    <div class="d-flex justify-content-between align-items-start py-3 {% if not loop.last %}border-bottom border-secondary-subtle{% endif %}">
+        <div>
+            <h6 class="mb-1">
+                {{ item.nome }}
+                {% if item.tipo == 'montada' %}<span class="badge bg-info text-dark">personalizada</span>{% endif %}
+            </h6>
+            {% if item.ingredientes %}
+            <p class="small text-light-emphasis mb-1">
+                {{ item.ingredientes | map(attribute='nome') | join(', ') }}
+            </p>
+            {% endif %}
+            <p class="small text-light-emphasis mb-0">
+                {{ item.quantidade }} × R$ {{ '%.2f'|format(item.preco_unitario)|replace('.', ',') }}
+            </p>
+        </div>
+        <div class="text-end">
+            <p class="preco mb-2">R$ {{ '%.2f'|format(item.subtotal)|replace('.', ',') }}</p>
+            <form method="POST" action="{{ url_for('carrinho_remover', indice=loop.index0) }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Remover</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <form method="POST" action="{{ url_for('carrinho_limpar') }}">
+        <button type="submit" class="btn btn-outline-light btn-sm">Esvaziar carrinho</button>
+    </form>
+
+    <div class="text-end">
+        <p class="mb-2">Total: <strong class="preco fs-4">R$ {{ '%.2f'|format(total)|replace('.', ',') }}</strong></p>
+        <a href="{{ url_for('checkout') }}" class="btn btn-pizza btn-lg">Finalizar Pedido</a>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    Seu carrinho está vazio.
+    <a href="{{ url_for('cardapio') }}">Ver cardápio</a> ou
+    <a href="{{ url_for('monte_pizza') }}">montar sua pizza</a>.
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Configurações da Loja{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card-form">
+            <h2 class="mb-4">🏪 Configurações da Loja</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.nome_loja.label(class="form-label") }}
+                    {{ form.nome_loja(class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.endereco.label(class="form-label") }}
+                    {{ form.endereco(class="form-control") }}
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.telefone.label(class="form-label") }}
+                        {{ form.telefone(class="form-control") }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.whatsapp.label(class="form-label") }}
+                        {{ form.whatsapp(class="form-control", placeholder="Ex: 75999998888") }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ form.horario_funcionamento.label(class="form-label") }}
+                    {{ form.horario_funcionamento(class="form-control") }}
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.latitude.label(class="form-label") }}
+                        {{ form.latitude(class="form-control") }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.longitude.label(class="form-label") }}
+                        {{ form.longitude(class="form-control") }}
+                    </div>
+                </div>
+                <p class="small text-light-emphasis">
+                    Dica: pesquise seu endereço no Google Maps, clique com o botão direito no ponto exato
+                    e copie a latitude/longitude que aparece.
+                </p>
+                <div class="mb-4">
+                    {{ form.preco_base_montagem.label(class="form-label") }}
+                    {{ form.preco_base_montagem(class="form-control") }}
+                </div>
+
+                {{ form.submit(class="btn btn-pizza w-100") }}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

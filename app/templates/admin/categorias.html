@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Categorias{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">🏷️ Categorias do Cardápio</h1>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <div class="card-form">
+            <h5>Nova categoria</h5>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.nome.label(class="form-label") }}
+                    {{ form.nome(class="form-control") }}
+                </div>
+                {{ form.submit(class="btn btn-pizza w-100") }}
+            </form>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="card-form">
+            <h5>Categorias existentes</h5>
+            {% if categorias %}
+            <ul class="list-group list-group-flush">
+                {% for categoria in categorias %}
+                <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                    {{ categoria.nome }}
+                    <span class="small text-light-emphasis">{{ categoria.pizzas|length }} pizza(s)</span>
+                    <form method="POST" action="{{ url_for('admin_categorias_excluir', categoria_id=categoria.id) }}"
+                          onsubmit="return confirm('Excluir esta categoria?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Excluir</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-light-emphasis mb-0">Nenhuma categoria cadastrada.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

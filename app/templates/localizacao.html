@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Localização — {{ config_loja.nome_loja if config_loja else 'Pizzaria' }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">📍 Onde estamos</h1>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card-form">
+            <h5>{{ config.nome_loja }}</h5>
+            <p class="mb-2">📍 {{ config.endereco }}</p>
+            <p class="mb-2">📞 {{ config.telefone }}</p>
+            {% if config.whatsapp %}
+            <p class="mb-2">
+                <a href="https://wa.me/55{{ config.whatsapp }}" target="_blank" class="text-success">
+                    💬 Chamar no WhatsApp
+                </a>
+            </p>
+            {% endif %}
+            <p class="mb-0">🕒 {{ config.horario_funcionamento }}</p>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <iframe
+            class="mapa-embed"
+            src="https://www.google.com/maps?q={{ config.latitude }},{{ config.longitude }}&hl=pt-BR&z=16&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</div>
+{% endblock %}

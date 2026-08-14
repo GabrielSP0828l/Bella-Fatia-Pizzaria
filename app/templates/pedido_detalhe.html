@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Pedido #{{ pedido.id }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-2">📦 Pedido #{{ pedido.id }}</h1>
+<p class="mb-4">
+    <span class="badge badge-status-{{ pedido.status.name }}">{{ pedido.status.value }}</span>
+    <span class="text-light-emphasis small ms-2">{{ pedido.criado_em.strftime('%d/%m/%Y às %H:%M') }}</span>
+</p>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card-form">
+            <h5>Itens do pedido</h5>
+            {% for item in pedido.itens %}
+            <div class="py-2 border-bottom border-secondary-subtle">
+                <div class="d-flex justify-content-between">
+                    <span>{{ item.quantidade }}× {{ item.nome }}</span>
+                    <span>{{ item.subtotal_formatado() }}</span>
+                </div>
+                {% if item.ingredientes %}
+                <p class="small text-light-emphasis mb-0">
+                    {{ item.ingredientes | map(attribute='nome') | join(', ') }}
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-between mt-3">
+                <strong>Total</strong>
+                <strong class="preco">{{ pedido.total_formatado() }}</strong>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card-form">
+            <h5>Entrega</h5>
+            <p class="mb-1"><strong>Endereço:</strong> {{ pedido.endereco_entrega }}</p>
+            <p class="mb-1"><strong>Pagamento:</strong> {{ pedido.forma_pagamento }}</p>
+            {% if pedido.observacoes %}
+            <p class="mb-0"><strong>Observações:</strong> {{ pedido.observacoes }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

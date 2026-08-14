@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Finalizar Pedido{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">✅ Finalizar Pedido</h1>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card-form">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.endereco_entrega.label(class="form-label") }}
+                    {{ form.endereco_entrega(class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.forma_pagamento.label(class="form-label") }}
+                    {{ form.forma_pagamento(class="form-select") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.observacoes.label(class="form-label") }}
+                    {{ form.observacoes(class="form-control", rows=3, placeholder="Ex: sem cebola, campainha não funciona...") }}
+                </div>
+
+                {{ form.submit(class="btn btn-pizza w-100") }}
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card-form">
+            <h5>Resumo do pedido</h5>
+            {% for item in itens %}
+            <div class="d-flex justify-content-between small py-2 border-bottom border-secondary-subtle">
+                <span>{{ item.quantidade }}× {{ item.nome }}</span>
+                <span>R$ {{ '%.2f'|format(item.subtotal)|replace('.', ',') }}</span>
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-between mt-3">
+                <strong>Total</strong>
+                <strong class="preco">R$ {{ '%.2f'|format(total)|replace('.', ',') }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

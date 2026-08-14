@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Cardápio — {{ config_loja.nome_loja if config_loja else 'Pizzaria' }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">📋 Cardápio</h1>
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a href="{{ url_for('cardapio') }}" class="btn btn-sm {{ 'btn-pizza' if not categoria_id else 'btn-outline-light' }}">Todas</a>
+    {% for cat in categorias %}
+    <a href="{{ url_for('cardapio', categoria=cat.id) }}"
+       class="btn btn-sm {{ 'btn-pizza' if categoria_id == cat.id else 'btn-outline-light' }}">
+        {{ cat.nome }}
+    </a>
+    {% endfor %}
+</div>
+
+{% if pizzas %}
+<div class="row g-4">
+    {% for pizza in pizzas %}
+    <div class="col-sm-6 col-lg-4">
+        <div class="card-pizza">
+            {% if pizza.imagem %}
+            <img src="{{ url_for('static', filename='uploads/pizzas/' + pizza.imagem) }}" class="foto-pizza" alt="{{ pizza.nome }}">
+            {% else %}
+            <div class="foto-pizza-fallback">🍕</div>
+            {% endif %}
+            <div class="card-body">
+                <h5>{{ pizza.nome }}</h5>
+                <p class="small text-light-emphasis flex-grow-1">{{ pizza.descricao or '' }}</p>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="preco">{{ pizza.preco_formatado() }}</span>
+                </div>
+                <form method="POST" action="{{ url_for('carrinho_adicionar_pizza', pizza_id=pizza.id) }}" class="d-flex gap-2">
+                    <input type="number" name="quantidade" value="1" min="1" max="20" class="form-control form-control-sm" style="width: 70px;">
+                    <button type="submit" class="btn btn-pizza btn-sm flex-grow-1">Adicionar ao carrinho</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">Nenhuma pizza disponível nessa categoria no momento.</div>
+{% endif %}
+{% endblock %}

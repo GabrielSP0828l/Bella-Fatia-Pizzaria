@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Monte sua Pizza — {{ config_loja.nome_loja if config_loja else 'Pizzaria' }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-2">🍕 Monte sua Pizza</h1>
+<p class="text-light-emphasis mb-4">
+    Escolha os ingredientes que quiser — o preço vai atualizando conforme você adiciona,
+    igual num pedido de fast-food.
+</p>
+
+<form method="POST" action="{{ url_for('carrinho_adicionar_montada') }}" id="formMontarPizza">
+    {{ form.hidden_tag() }}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            {% for tipo, itens in grupos.items() %}
+            <h5 class="mt-3">{{ tipo.value }}</h5>
+            <div class="d-flex flex-column gap-2 mb-3">
+                {% for ingrediente in itens %}
+                <div class="ingrediente-item">
+                    <div class="form-check d-flex align-items-center gap-2 mb-0">
+                        <input
+                            class="form-check-input ingrediente-checkbox"
+                            type="checkbox"
+                            name="ingredientes"
+                            value="{{ ingrediente.id }}"
+                            id="ing-{{ ingrediente.id }}"
+                            data-preco="{{ ingrediente.preco }}">
+                        {% if ingrediente.imagem %}
+                        <img src="{{ url_for('static', filename='uploads/ingredientes/' + ingrediente.imagem) }}" class="thumb-pequena" alt="">
+                        {% endif %}
+                        <label class="form-check-label" for="ing-{{ ingrediente.id }}">{{ ingrediente.nome }}</label>
+                    </div>
+                    <span class="preco-add">+ {{ ingrediente.preco_formatado() }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">Nenhum ingrediente cadastrado ainda para montagem.</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="total-flutuante">
+                <h5>Resumo do pedido</h5>
+                <div class="d-flex justify-content-between small text-light-emphasis">
+                    <span>Massa base</span>
+                    <span id="precoBase">R$ {{ '%.2f'|format(config.preco_base_montagem)|replace('.', ',') }}</span>
+                </div>
+                <ul class="list-unstyled small mt-2 mb-2" id="listaIngredientesEscolhidos"></ul>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <strong>Total</strong>
+                    <strong class="preco fs-4" id="precoTotal">R$ 0,00</strong>
+                </div>
+
+                <label for="quantidadeMontada" class="form-label small">Quantidade</label>
+                <input type="number" id="quantidadeMontada" name="quantidade" value="1" min="1" max="20" class="form-control mb-3">
+
+                <button type="submit" class="btn btn-pizza w-100">🛒 Adicionar ao carrinho</button>
+                <p class="small text-light-emphasis mt-2 mb-0">
+                    Você pode montar quantas pizzas quiser antes de finalizar o pedido.
+                </p>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    const precoBase = {{ config.preco_base_montagem }};
+    const checkboxes = document.querySelectorAll('.ingrediente-checkbox');
+    const precoTotalEl = document.getElementById('precoTotal');
+    const listaEscolhidos = document.getElementById('listaIngredientesEscolhidos');
+
+    function formatarReal(valor) {
+        return 'R$ ' + valor.toFixed(2).replace('.', ',');
+    }
+
+    function atualizarTotal() {
+        let total = precoBase;
+        listaEscolhidos.innerHTML = '';
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                const preco = parseFloat(checkbox.dataset.preco);
+                total += preco;
+
+                const nomeLabel = document.querySelector('label[for="' + checkbox.id + '"]').textContent;
+                const li = document.createElement('li');
+                li.className = 'd-flex justify-content-between';
+                li.innerHTML = '<span>+ ' + nomeLabel + '</span><span>' + formatarReal(preco) + '</span>';
+                listaEscolhidos.appendChild(li);
+            }
+        });
+
+        precoTotalEl.textContent = formatarReal(total);
+    }
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', atualizarTotal);
+    });
+
+    atualizarTotal();
+})();
+</script>
+{% endblock %}
