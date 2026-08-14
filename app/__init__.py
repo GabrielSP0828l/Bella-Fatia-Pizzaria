@@ -53,12 +53,12 @@ with app.app_context():
         db.session.add(models.Configuracao(
             nome_loja='Bella Fatia Pizzaria',
             endereco='Av. Presidente Dutra, 456 - Centro, Feira de Santana - BA',
-            telefone='(75) 3221-4455',
+            telefone='(75) 12203949',
             whatsapp='75999998888',
             horario_funcionamento='Terça a Domingo, das 18h às 23h30',
             latitude=-12.2664,
             longitude=-38.9663,
-            preco_base_montagem=22.00
+            preco_base_montagem=20.00
         ))
 
     db.session.commit()

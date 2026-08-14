@@ -1,7 +1,4 @@
-"""
-Script para criar (ou promover) um usuário administrador da pizzaria.
-Rode com: python create_admin.py
-"""
+
 from getpass import getpass
 
 from app import app, db
